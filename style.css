@@ -1,340 +1,372 @@
-/* Importa a fonte Poppins do Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* Importação da fonte Poppins do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); /* Carrega a fonte Poppins com pesos 400,500,600,700 */
 
-/* Definição de variáveis CSS para cores e sombras */
+/* Variáveis CSS para facilitar manutenção e troca de cores */
 :root {
-    --primary-color: #00bcd4; /* Cor principal (azul turquesa) usada em botões e destaques */
-    --secondary-color: #26a69a; /* Cor secundária (verde-água) */
+    --primary-color: #00bcd4; /* Azul turquesa vibrante — cor principal usada em botões e destaques */
+    --secondary-color: #26a69a; /* Verde-água complementar — usado para harmonia visual */
     --text-color: #303030; /* Cor principal do texto */
     --light-text-color: #666; /* Cor de texto secundário (mais clara) */
-    --container-bg-color: rgba(255, 255, 255, 0.95); /* Fundo branco semi-transparente para o container */
-    --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra leve */
-    --shadow-medium: rgba(0, 0, 0, 0.5); /* Sombra média para destaque */
-    --success-bg: #e8f5e9; /* Fundo verde suave para resultados positivos */
-    --success-border: #81c784; /* Borda verde clara para destacar sucesso */
+    --container-bg-color: rgba(255, 255, 255, 0.95); /* Fundo branco semi-transparente do container principal */
+    --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra leve para efeitos sutis */
+    --shadow-medium: rgba(0, 0, 0, 0.5); /* Sombra mais forte — dá destaque ao container */
+    --success-bg: #e8f5e9; /* Fundo verde claro suave — usado na área de resultado de sucesso */
+    --success-border: #81c784; /* Borda verde clara para destacar o sucesso */
 }
 
 /* Estilo geral do corpo da página */
 body {
-    font-family: 'Poppins', sans-serif; /* Define a fonte Poppins */
-    background: url('tema.jpg') no-repeat center center fixed; /* Define imagem de fundo fixa e centralizada */
-    background-size: cover; /* Ajusta a imagem para cobrir todo o fundo */
-    display: flex; /* Usa flexbox para centralizar conteúdo */
+    font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins em todo o corpo */
+    background: url('tema.jpg') no-repeat center center fixed; /* Imagem de fundo centralizada e fixa */
+    background-size: cover; /* Ajusta a imagem para cobrir toda a tela */
+    display: flex; /* Usamos flexbox para centralizar conteúdos */
     justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    min-height: 100vh; /* Altura mínima da tela */
-    margin: 0; /* Remove margem padrão do navegador */
-    padding: 20px 0; /* Espaçamento interno vertical */
-    color: var(--text-color); /* Cor padrão do texto */
-    line-height: 1.6; /* Espaçamento entre linhas do texto */
-    overflow-y: auto; /* Permite rolagem vertical se necessário */
+    /* --- CORREÇÃO AQUI: Removemos align-items: center para não cortar o topo/base --- */
+    /* Deixamos o container ser centralizado com margens automáticas */
+    min-height: 100vh; /* Garante que o body ocupe pelo menos a altura da tela */
+    margin: 0; /* Remove margens padrão */
+    padding: 20px 0; /* Padding superior e inferior */
+    color: var(--text-color); /* Cor principal do texto */
+    line-height: 1.6; /* Espaçamento entre linhas */
+    overflow-y: auto; /* Permite rolagem vertical se o conteúdo passar da tela */
 }
 
 /* Container principal da calculadora */
 .container {
     background-color: var(--container-bg-color); /* Fundo branco semi-transparente */
-    padding: 30px; /* Espaçamento interno */
+    padding: 30px; /* Espaçamento interno do container */
     border-radius: 18px; /* Cantos arredondados */
-    box-shadow: 0 12px 40px var(--shadow-medium); /* Sombra externa */
-    width: 100%; /* Largura máxima disponível */
-    max-width: 400px; /* Largura máxima limitada */
-    text-align: center; /* Centraliza elementos dentro do container */
+    box-shadow: 0 12px 40px var(--shadow-medium); /* Sombra para dar profundidade */
+    width: 100%; /* Largura máxima do container */
+    max-width: 400px; /* Limita a largura para 400px */
+    text-align: center; /* Centraliza textos */
     border: 1px solid rgba(0, 0, 0, 0.1); /* Borda sutil */
     animation: fadeIn 0.8s ease-out; /* Aplica animação de fade-in */
+    
+    /* Margens automáticas para centralizar verticalmente */
+    margin: auto 0; 
 }
 
-/* Animação fadeIn: faz o container surgir suavemente */
+/* Animação de fade-in (surgir suavemente) */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); } /* Início invisível e deslocado para baixo */
-    to { opacity: 1; transform: translateY(0); } /* Fim visível na posição original */
+    from { opacity: 0; transform: translateY(20px); } /* Início: invisível e levemente abaixo */
+    to { opacity: 1; transform: translateY(0); } /* Fim: totalmente visível e na posição */
 }
 
-/* Animação para o resultado aparecer deslizando para cima */
+/* Animação de deslizar para cima usada no resultado */
 @keyframes slideInUp {
-    from { opacity: 0; transform: translateY(15px); } /* Início invisível e levemente abaixo */
-    to { opacity: 1; transform: translateY(0); } /* Fim visível na posição original */
+    from { opacity: 0; transform: translateY(15px); } /* Início: invisível e levemente abaixo */
+    to { opacity: 1; transform: translateY(0); } /* Fim: visível e na posição */
 }
 
-/* Título principal */
+/* Estilo do título principal */
 h1 {
     color: var(--primary-color); /* Cor azul turquesa */
-    margin-bottom: 8px; /* Espaçamento abaixo do título */
-    font-weight: 700; /* Negrito forte */
-    font-size: 2.2em; /* Tamanho do título */
+    margin-bottom: 8px; /* Espaço abaixo do título */
+    font-weight: 700; /* Negrito */
+    font-size: 2.2em; /* Tamanho da fonte */
 }
 
-/* Destaque dentro do título (span) */
+/* Destaque dentro do título (span.highlight) */
 h1 .highlight {
-    color: var(--text-color); /* Cor escura para destaque */
+    color: var(--text-color); /* Cor do texto normal */
 }
 
 /* Subtítulo abaixo do título */
 .subtitle {
-    margin-top: -5px; /* Levanta levemente o subtítulo */
-    margin-bottom: 25px; /* Espaço abaixo */
+    margin-top: -5px; /* Ajuste fino para aproximar do título */
+    margin-bottom: 25px; /* Espaço abaixo do subtítulo */
     color: var(--light-text-color); /* Cor cinza clara */
-    font-size: 1em; /* Tamanho do texto */
-    font-weight: 500; /* Peso médio */
+    font-size: 1em; /* Tamanho da fonte padrão */
+    font-weight: 500; /* Peso intermediário */
 }
 
-/* Agrupamento de inputs */
+/* Agrupamento dos campos de entrada e rótulos */
 .input-group {
     margin-bottom: 20px; /* Espaço abaixo do grupo */
-    text-align: left; /* Alinha os elementos à esquerda */
+    text-align: left; /* Alinha rótulos e inputs à esquerda */
 }
 
-/* Rótulos (labels) */
+/* Rótulos dos campos (label) */
 label {
-    display: block; /* Ocupa linha inteira */
-    margin-bottom: 6px; /* Espaço abaixo do texto */
-    font-weight: 600; /* Peso médio */
+    display: block; /* Ocupa a linha inteira */
+    margin-bottom: 6px; /* Espaço abaixo do rótulo */
+    font-weight: 600; /* Negrito leve */
     color: var(--text-color); /* Cor do texto */
-    font-size: 1em; /* Tamanho do texto */
+    font-size: 1em; /* Tamanho da fonte */
 }
 
 /* Campos de entrada numéricos */
 input[type="number"] {
-    width: 100%; /* Ocupa toda a largura */
-    padding: 12px 14px; /* Espaçamento interno */
+    width: 100%; /* Ocupa toda a largura do container */
+    padding: 12px 14px; /* Espaço interno */
     border: 2px solid #ddd; /* Borda cinza clara */
-    border-radius: 10px; /* Bordas arredondadas */
-    box-sizing: border-box; /* Inclui padding e borda na largura */
+    border-radius: 10px; /* Cantos arredondados */
+    box-sizing: border-box; /* Inclui padding na largura total */
     font-size: 16px; /* Tamanho do texto */
     color: var(--text-color); /* Cor do texto */
-    background-color: #fcfcfc; /* Fundo branco */
-    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transição suave para borda e sombra */
+    background-color: #fcfcfc; /* Fundo quase branco */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Animação suave ao focar */
 }
 
-/* Placeholder dentro do input */
+/* Cor do texto placeholder dentro dos inputs */
 input[type="number"]::placeholder {
-    color: #a0a0a0; /* Cinza claro */
+    color: #a0a0a0; /* Cinza médio */
 }
 
-/* Efeito ao focar no input */
+/* Efeito visual ao focar o input */
 input[type="number"]:focus {
     outline: none; /* Remove contorno padrão */
     border-color: var(--primary-color); /* Borda azul ao focar */
-    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); /* Sombra ao redor */
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); /* Sombra suave azul */
 }
 
-/* Botão principal */
+/* Botão principal de calcular */
 button {
     width: 100%; /* Ocupa toda a largura */
     padding: 14px 18px; /* Espaçamento interno */
-    background-color: var(--primary-color); /* Cor azul turquesa */
+    background-color: var(--primary-color); /* Fundo azul */
     color: white; /* Texto branco */
-    border: none; /* Remove borda padrão */
+    border: none; /* Sem borda */
     border-radius: 10px; /* Cantos arredondados */
-    font-size: 1.1em; /* Tamanho do texto */
+    font-size: 1.1em; /* Tamanho da fonte */
     font-weight: 700; /* Negrito */
     cursor: pointer; /* Cursor tipo mãozinha */
-    transition: background-color 0.3s ease-in-out, transform 0.15s ease-in-out, box-shadow 0.3s ease-in-out; /* Transições suaves */
+    transition: background-color 0.3s ease-in-out, transform 0.15s ease-in-out, box-shadow 0.3s ease-in-out; /* Suaviza hover/ativo */
     letter-spacing: 0.5px; /* Espaçamento entre letras */
-    box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3); /* Sombra do botão */
+    box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3); /* Sombra leve */
 }
 
 /* Efeito hover no botão */
 button:hover {
     background-color: #008997; /* Azul mais escuro */
-    box-shadow: 0 7px 20px rgba(0, 188, 212, 0.4); /* Sombra maior */
+    box-shadow: 0 7px 20px rgba(0, 188, 212, 0.4); /* Sombra mais forte */
 }
 
 /* Efeito ao clicar no botão */
 button:active {
-    transform: scale(0.98); /* Reduz levemente o botão */
-    box-shadow: 0 3px 10px rgba(0, 188, 212, 0.2); /* Sombra menor */
+    transform: scale(0.98); /* Leve encolhimento ao clicar */
+    box-shadow: 0 3px 10px rgba(0, 188, 212, 0.2); /* Sombra reduzida */
 }
 
-/* Área de resultado */
+/* Área onde o resultado é exibido */
 #resultado {
     margin-top: 30px; /* Espaço acima */
     padding: 20px; /* Espaçamento interno */
     background-color: var(--success-bg); /* Fundo verde claro */
-    border: 1px solid var(--success-border); /* Borda verde */
+    border: 1px solid var(--success-border); /* Borda verde clara */
     border-radius: 12px; /* Cantos arredondados */
-    font-size: 1.2em; /* Tamanho do texto */
-    font-weight: 600; /* Negrito */
+    font-size: 1.2em; /* Tamanho da fonte */
+    font-weight: 600; /* Negrito médio */
     color: var(--text-color); /* Cor do texto */
-    box-shadow: inset 0 2px 5px var(--shadow-light); /* Sombra interna sutil */
-    line-height: 1.4; /* Espaçamento entre linhas */
-    transition: all 0.5s ease-out; /* Transição suave para mudanças */
+    box-shadow: inset 0 2px 5px var(--shadow-light); /* Sombra interna leve */
+    line-height: 1.4; /* Altura da linha */
+    transition: all 0.5s ease-out; /* Suaviza mudanças de estilo */
 }
 
-/* Resultado animado */
+/* Animação aplicada quando o JS adiciona a classe 'animated-result' */
 #resultado.animated-result {
-    animation: slideInUp 0.5s ease-out; /* Animação de slide */
-    transform-origin: bottom; /* Origem do movimento na base */
+    animation: slideInUp 0.5s ease-out; /* Slide para cima */
+    transform-origin: bottom; /* Origem da transformação: base */
 }
 
-/* Estilos para seção de estoque de troco */
+/* --- ESTILOS PARA A SEÇÃO DE ESTOQUE DE TROCO --- */
 .troco-disponivel {
     margin-top: 40px; /* Espaço acima */
-    padding-top: 0; /* Remove padding superior */
+    padding-top: 0; /* Sem padding superior */
     border-top: none; /* Sem borda superior */
-    text-align: left; /* Alinha o texto à esquerda */
+    text-align: left; /* Alinhamento à esquerda */
 }
 
-/* Linha divisória antes da seção */
+/* Novo estilo para o separador */
 .troco-disponivel::before {
     content: ''; /* Conteúdo vazio */
-    display: block; /* Elemento em bloco */
-    width: 100%; /* Ocupa toda a largura */
-    height: 1px; /* Altura de 1px */
+    display: block; /* Ocupa linha inteira */
+    width: 100%; /* Largura total */
+    height: 1px; /* Altura do separador */
     background-color: #e0e0e0; /* Cor cinza clara */
     margin-bottom: 20px; /* Espaço abaixo */
 }
 
-/* Botão de toggle da seção de estoque */
+/* Botão/Título de Toggle */
 #toggle-estoque {
-    background: none; /* Sem fundo */
+    background: none; /* Fundo transparente */
     border: none; /* Sem borda */
     width: 100%; /* Largura total */
     padding: 0; /* Sem padding */
     text-align: center; /* Centraliza conteúdo */
-    cursor: pointer; /* Cursor pointer */
-    display: flex; /* Flexbox para ícone e texto */
-    flex-direction: column; /* Empilha verticalmente */
+    cursor: pointer; /* Cursor mãozinha */
+    display: flex; /* Flexbox */
+    flex-direction: column; /* Coluna */
     justify-content: center; /* Centraliza verticalmente */
     align-items: center; /* Centraliza horizontalmente */
     color: var(--text-color); /* Cor do texto */
-    font-size: 1.1em; /* Tamanho do texto */
-    font-weight: 600; /* Peso médio */
-    transition: color 0.3s; /* Transição da cor */
+    font-size: 1.1em; /* Fonte um pouco maior */
+    font-weight: 600; /* Negrito leve */
+    transition: color 0.3s; /* Suaviza mudança de cor */
     margin-bottom: 5px; /* Espaço abaixo */
 }
 
-/* Hover no toggle */
 #toggle-estoque:hover {
-    color: var(--primary-color); /* Muda cor ao passar o mouse */
+    color: var(--primary-color); /* Muda para azul ao passar o mouse */
 }
 
-/* Título da seção estoque */
 .estoque-titulo {
     margin: 0; /* Remove margem */
-    font-size: 1em; /* Tamanho do texto */
+    font-size: 1em; /* Tamanho da fonte */
     color: var(--text-color); /* Cor do texto */
     width: auto; /* Largura automática */
 }
 
-/* Ícone do toggle */
+/* Estilo do Ícone (Seta) */
 .toggle-icon {
-    transition: transform 0.3s ease-in-out; /* Animação da rotação */
+    transition: transform 0.3s ease-in-out; /* Suaviza rotação */
     margin-top: 5px; /* Espaço acima */
-    font-size: 0.8em; /* Tamanho menor */
+    margin-left: 0; /* Sem margem esquerda */
+    font-size: 0.8em; /* Fonte pequena */
     color: var(--light-text-color); /* Cor cinza clara */
 }
 
-/* Rotação do ícone quando fechado */
+/* Classe que será adicionada pelo JS para girar a seta */
 .toggle-btn[aria-expanded="false"] .toggle-icon {
-    transform: rotate(180deg); /* Gira a seta */
+    transform: rotate(180deg); /* Rotaciona seta para baixo */
 }
 
-/* Conteúdo do estoque */
+/* Conteúdo que será escondido/mostrado */
 .estoque-content {
-    max-height: 500px; /* Altura máxima */
-    overflow: hidden; /* Esconde o conteúdo que ultrapassar */
-    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Transições suaves */
+    max-height: 1000px; /* Altura máxima grande para caber conteúdo */
+    overflow: hidden; /* Esconde conteúdo extra */
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Anima altura e opacidade */
 }
 
-/* Subtítulo da seção de estoque */
+/* Ajusta o subtítulo dentro da seção de estoque */
 .troco-disponivel .subtitle {
-    text-align: center; /* Centraliza texto */
+    text-align: center; /* Centraliza subtítulo */
     margin-bottom: 15px; /* Espaço abaixo */
-    margin-top: 15px; /* Espaço acima */
+    margin-top: 5px; /* Pequeno espaço acima */
     color: var(--light-text-color); /* Cor cinza clara */
 }
 
-/* Quando conteúdo do estoque está oculto */
+/* Classe que será adicionada pelo JS para esconder o conteúdo */
 .estoque-content.hidden {
     max-height: 0; /* Altura zero */
     opacity: 0; /* Invisível */
-    padding-bottom: 0; /* Sem padding inferior */
+    padding-bottom: 0; /* Remove padding inferior */
 }
 
-/* Grid de cédulas */
+/* Regras de Layout do Grid */
 .cedulas-grid {
-    display: grid; /* Exibe em grid */
-    grid-template-columns: repeat(2, 1fr); /* Duas colunas de tamanho igual */
-    gap: 10px 15px; /* Espaço entre linhas e colunas */
+    display: grid; /* Define grid */
+    grid-template-columns: repeat(2, 1fr); /* Duas colunas iguais */
+    gap: 10px 15px; /* Espaçamento entre linhas e colunas */
+    margin-top: 0; /* Sem margem acima */
 }
 
-/* Item de cédula */
 .cedula-item {
     display: flex; /* Flexbox */
-    align-items: center; /* Alinha verticalmente */
+    align-items: center; /* Centraliza verticalmente */
     justify-content: space-between; /* Espaço entre elementos */
-    gap: 8px; /* Espaço entre elementos */
-    padding: 5px 0; /* Espaço vertical interno */
+    gap: 8px; /* Espaçamento interno */
+    padding: 5px 0; /* Espaçamento vertical */
 }
 
-/* Label da cédula */
 .cedula-item label {
     margin-bottom: 0; /* Remove margem inferior */
-    font-size: 0.9em; /* Tamanho do texto */
-    font-weight: 500; /* Peso médio */
+    font-size: 0.9em; /* Fonte menor */
+    font-weight: 500; /* Negrito leve */
+    white-space: nowrap; /* Não quebra linha */
 }
 
-/* Input da cédula */
 .cedula-item input {
     width: 50px; /* Largura fixa */
-    text-align: center; /* Texto centralizado */
+    text-align: center; /* Centraliza números */
     padding: 6px; /* Padding interno */
-    font-size: 14px; /* Tamanho do texto */
+    font-size: 14px; /* Tamanho da fonte */
 }
 
-/* Resultado oculto */
+/* Fim dos estilos de estoque */
+
+/* Estilização da classe que esconde/move para animar (usada no JS) */
 #resultado.hidden-result {
     opacity: 0; /* Invisível */
-    transform: translateY(15px); /* Levemente deslocado */
+    transform: translateY(15px); /* Move levemente para baixo */
 }
 
-/* Placeholder do resultado */
+/* Placeholder dentro da área de resultado */
 #resultado p:only-child {
     margin: 0; /* Remove margem */
     font-style: italic; /* Itálico */
-    color: #a0a0a0; /* Cinza claro */
-    font-weight: 400; /* Peso normal */
+    color: #a0a0a0; /* Cinza médio */
+    font-weight: 400; /* Normal */
 }
 
-/* Título dentro do resultado */
+/* Título dentro do resultado (ex: “Detalhes do troco”) */
 #resultado h3 {
-    font-size: 1.1em; /* Tamanho do texto */
-    margin: 15px 0 8px 0; /* Espaçamento */
+    font-size: 1.1em; /* Fonte menor */
+    margin-top: 15px; /* Espaço acima */
+    margin-bottom: 8px; /* Espaço abaixo */
     color: #388e3c; /* Verde escuro */
-    font-weight: 600; /* Peso médio */
+    font-weight: 600; /* Negrito leve */
 }
 
-/* Lista de itens do resultado */
+/* Lista dentro do resultado */
 #resultado ul {
     list-style: none; /* Remove marcadores */
-    padding: 0; /* Remove padding */
+    padding: 0; /* Sem padding */
     margin: 10px 0 0 0; /* Margem superior */
-    text-align: left; /* Texto alinhado à esquerda */
-    font-size: 0.95em; /* Tamanho do texto */
-    color: var(--light-text-color); /* Cor cinza clara */
+    text-align: left; /* Alinha à esquerda */
+    font-weight: 400; /* Peso normal */
+    font-size: 0.95em; /* Fonte menor */
+    color: var(--light-text-color); /* Cinza claro */
 }
 
-/* Cada item da lista */
+/* Cada item da lista de troco */
 #resultado ul li {
-    padding: 5px 0; /* Espaçamento vertical */
-    border-bottom: 1px dashed #e0e0e0; /* Linha inferior pontilhada */
+    padding: 5px 0; /* Espaço vertical */
+    border-bottom: 1px dashed #e0e0e0; /* Linha pontilhada abaixo */
 }
 
-/* Último item da lista */
+/* Remove a linha do último item da lista */
 #resultado ul li:last-child {
-    border-bottom: none; /* Remove borda inferior */
+    border-bottom: none; /* Remove borda inferior do último item */
 }
 
-/* Mensagens de erro e sucesso específicas */
-#resultado p[style*="red"] { color: #e53935 !important; } /* Texto vermelho */
-#resultado p[style*="green"] { color: #388e3c !important; } /* Texto verde */
+/* Cores específicas para mensagens de erro e sucesso */
+#resultado p[style*="red"] {
+    color: #e53935 !important; /* Mensagem de erro em vermelho */
+}
 
-/* Responsividade para telas pequenas */
+#resultado p[style*="green"] {
+    color: #388e3c !important; /* Mensagem de sucesso em verde */
+}
+
+/* Responsividade para telas pequenas (ex: celulares) */
 @media (max-width: 500px) {
-    .container { padding: 25px; border-radius: 15px; } /* Ajusta padding e bordas */
-    h1 { font-size: 2em; } /* Reduz tamanho do título */
-    .subtitle { font-size: 0.9em; } /* Reduz tamanho do subtítulo */
-    input[type="number"], button { font-size: 15px; padding: 10px 12px; } /* Ajusta inputs e botão */
-    #resultado { font-size: 1.1em; padding: 15px; } /* Ajusta área de resultado */
-    .cedulas-grid { grid-template-columns: 1fr; } /* Coluna única na grid de cédulas */
+    .container {
+        padding: 25px; /* Menos padding */
+        border-radius: 15px; /* Cantos menores */
+    }
+
+    h1 {
+        font-size: 2em; /* Ajusta tamanho do título */
+    }
+
+    .subtitle {
+        font-size: 0.9em; /* Ajusta subtítulo */
+    }
+
+    input[type="number"], button {
+        font-size: 15px; /* Ajusta inputs e botão */
+        padding: 10px 12px; /* Menos padding */
+    }
+
+    #resultado {
+        font-size: 1.1em; /* Ajusta fonte do resultado */
+        padding: 15px; /* Menos padding */
+    }
+    
+    /* Faz a seção de estoque voltar para uma coluna */
+    .cedulas-grid {
+        grid-template-columns: 1fr; /* Apenas uma coluna */
+    }
 }
