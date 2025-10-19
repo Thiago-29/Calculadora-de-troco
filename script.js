@@ -21,19 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mapeia os valores (em centavos) das cédulas e moedas para o ID do input correspondente
     const mapaValoresParaIDs = {
-        20000: 'qnt_200',    // R$ 200,00
-        10000: 'qnt_100',    // R$ 100,00
-        5000:  'qnt_50',     // R$ 50,00
-        2000:  'qnt_20',     // R$ 20,00
-        1000:  'qnt_10',     // R$ 10,00
-        500:   'qnt_5',      // R$ 5,00
-        200:   'qnt_2',      // R$ 2,00
-        100:   'qnt_1',      // R$ 1,00
-        50:    'qnt_0_50',   // R$ 0,50
-        25:    'qnt_0_25',   // R$ 0,25
-        10:    'qnt_0_10',   // R$ 0,10
+        20000: 'qnt_200',   // R$ 200,00
+        10000: 'qnt_100',   // R$ 100,00
+        5000:  'qnt_50',    // R$ 50,00
+        2000:  'qnt_20',    // R$ 20,00
+        1000:  'qnt_10',    // R$ 10,00
+        500:   'qnt_5',     // R$ 5,00
+        200:   'qnt_2',     // R$ 2,00
+        100:   'qnt_1',     // R$ 1,00
+        50:    'qnt_0_50',  // R$ 0,50
+        25:    'qnt_0_25',  // R$ 0,25
+        10:    'qnt_0_10',  // R$ 0,10
         5:     'qnt_0_05',   // R$ 0,05
-        1:     'qnt_0_01'    // R$ 0,01 
+        1:     'qnt_0_01'    // R$ 0,01 - NOVO
     };
     
     // Cria um array com os valores das cédulas e moedas em centavos, ordenados do maior para o menor
