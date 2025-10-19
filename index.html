@@ -1,89 +1,105 @@
-<!DOCTYPE html> <!-- Define o documento como HTML5 -->
-<html lang="pt-br"> <!-- Define a língua do conteúdo como português do Brasil -->
+<!DOCTYPE html>
+<!-- Declara que este é um documento HTML5 -->
+<html lang="pt-br">
+<!-- Define a língua do documento como português do Brasil -->
+
 <head>
-    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsivo em dispositivos móveis -->
-    <title>Calculadora de Troco Inteligente</title> <!-- Título da aba do navegador -->
+    <meta charset="UTF-8">
+    <!-- Define a codificação de caracteres como UTF-8 -->
     
-    <!-- Importa a fonte Poppins do Google Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Garante que a página seja responsiva em dispositivos móveis -->
+    
+    <title>Calculadora de Troco Inteligente</title>
+    <!-- Título da página que aparece na aba do navegador -->
+    
+    <!-- Importa a fonte "Poppins" do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- Importa ícones do Font Awesome -->
+    <!-- Importa ícones da Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- Importa o arquivo CSS principal -->
+    <!-- Link para o arquivo CSS do projeto -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <!-- Container principal da calculadora -->
     <main class="container">
-        
-        <!-- Título principal com destaque no span -->
+    <!-- Container principal do conteúdo -->
+
         <h1><span class="highlight">Calculadora</span> de Troco</h1>
-        
-        <!-- Subtítulo abaixo do título -->
+        <!-- Título principal com destaque na palavra "Calculadora" -->
+
         <p class="subtitle">Agilize suas transações com precisão!</p>
+        <!-- Subtítulo da página -->
 
-        <!-- Grupo de input: Total da Compra -->
+        <!-- Grupo de input para o total da compra -->
         <div class="input-group">
-            <label for="total-compra">Total da Compra (R$):</label> <!-- Rótulo do input -->
+            <label for="total-compra">Total da Compra (R$):</label>
+            <!-- Label associada ao input "total-compra" -->
+            
             <input type="number" id="total-compra" placeholder="Ex: 50,75" step="0.01" autocomplete="off">
-            <!-- Input numérico para o total da compra com placeholder e step de centavos -->
+            <!-- Input numérico com passo de 0,01 e sem autocomplete -->
         </div>
 
-        <!-- Grupo de input: Valor Pago -->
+        <!-- Grupo de input para o valor pago -->
         <div class="input-group">
-            <label for="valor-pago">Valor Pago (R$):</label> <!-- Rótulo do input -->
+            <label for="valor-pago">Valor Pago (R$):</label>
             <input type="number" id="valor-pago" placeholder="Ex: 100,00" step="0.01" autocomplete="off">
-            <!-- Input numérico para o valor pago -->
         </div>
 
-        <!-- Botão para calcular o troco -->
+        <!-- Botão que aciona o cálculo do troco -->
         <button id="calcular">Calcular Troco</button>
 
-        <!-- Área onde o resultado do troco será exibido -->
+        <!-- Div onde será exibido o resultado do troco -->
         <div id="resultado">
-            <p>Seu troco aparecerá aqui.</p> <!-- Placeholder inicial -->
+            <p>Seu troco aparecerá aqui.</p>
         </div>
 
-        <!-- Seção de estoque de notas -->
+        <!-- Seção do estoque de troco disponível -->
         <div class="troco-disponivel">
             
-            <!-- Botão de toggle para mostrar/esconder o estoque -->
+            <!-- Botão para esconder/mostrar o estoque -->
             <button id="toggle-estoque" class="toggle-btn" aria-expanded="true">
-                <h3 class="estoque-titulo">Estoque de notas disponível</h3> <!-- Título do toggle -->
-                <i class="fas fa-chevron-up toggle-icon"></i> <!-- Ícone da seta -->
+                <h3 class="estoque-titulo">Estoque de Troco Disponível</h3>
+                <i class="fas fa-chevron-up toggle-icon"></i>
             </button>
             
-            <!-- Conteúdo do estoque, escondido/mostrado pelo toggle -->
+            <!-- Conteúdo do estoque, inicialmente visível -->
             <div id="estoque-content" class="estoque-content">
-                <p class="subtitle">Defina a quantidade de notas disponível no caixa.</p> <!-- Subtítulo -->
+                <p class="subtitle">Defina a quantidade de notas disponível no caixa.</p>
 
-                <!-- Grid de cédulas -->
+                <!-- Grid com os inputs de cédulas e moedas -->
                 <div class="cedulas-grid">
-                    <!-- Cada div é um item de cédula -->
+
+                    <!-- Cada div representa uma cédula ou moeda -->
                     <div class="cedula-item"><label for="qnt_200">R$ 200:</label><input type="number" id="qnt_200" min="0" value="1"></div>
                     <div class="cedula-item"><label for="qnt_100">R$ 100:</label><input type="number" id="qnt_100" min="0" value="2"></div>
                     <div class="cedula-item"><label for="qnt_50">R$ 50:</label><input type="number" id="qnt_50" min="0" value="5"></div>
                     <div class="cedula-item"><label for="qnt_20">R$ 20:</label><input type="number" id="qnt_20" min="0" value="10"></div>
+                    
                     <div class="cedula-item"><label for="qnt_10">R$ 10:</label><input type="number" id="qnt_10" min="0" value="10"></div>
                     <div class="cedula-item"><label for="qnt_5">R$ 5:</label><input type="number" id="qnt_5" min="0" value="10"></div>
                     <div class="cedula-item"><label for="qnt_2">R$ 2:</label><input type="number" id="qnt_2" min="0" value="20"></div>
                     <div class="cedula-item"><label for="qnt_1">R$ 1:</label><input type="number" id="qnt_1" min="0" value="50"></div>
+                    
                     <div class="cedula-item"><label for="qnt_0_50">R$ 0,50:</label><input type="number" id="qnt_0_50" min="0" value="50"></div>
                     <div class="cedula-item"><label for="qnt_0_25">R$ 0,25:</label><input type="number" id="qnt_0_25" min="0" value="50"></div>
                     <div class="cedula-item"><label for="qnt_0_10">R$ 0,10:</label><input type="number" id="qnt_0_10" min="0" value="50"></div>
                     <div class="cedula-item"><label for="qnt_0_05">R$ 0,05:</label><input type="number" id="qnt_0_05" min="0" value="50"></div>
-                    <div class="cedula-item"><label for="qnt_0_01">R$ 0,01:</label><input type="number" id="qnt_0_01" value="50" min="0" step="1">
-            </div>
+                    
+                    <div class="cedula-item"><label for="qnt_0_01">R$ 0,01:</label><input type="number" id="qnt_0_01" value="50" min="0" step="1"></div>
+                    <!-- Div vazia para espaçamento -->
+                    <div class="cedula-item"></div> 
+                    
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- Script principal -->
-    <script src="script.js"></script> <!-- Importa o arquivo JS responsável pelo cálculo e interações -->
+    <!-- Importa o arquivo JavaScript que controla a lógica do troco -->
+    <script src="script.js"></script>
 </body>
 </html>
