@@ -5,13 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // SEÇÃO 1: SELEÇÃO DE ELEMENTOS
     // ============================
 
+    // Seleciona o input do valor total da compra
     const totalCompraInput = document.getElementById('total-compra');
+    // Seleciona o input do valor pago pelo cliente
     const valorPagoInput = document.getElementById('valor-pago');
+    // Seleciona o botão que dispara o cálculo do troco
     const calcularBtn = document.getElementById('calcular');
+    // Seleciona o container onde o resultado do troco será exibido
     const resultadoDiv = document.getElementById('resultado');
 
-    // Elementos adicionais para o Estoque de Troco e o Toggle
+    // Seleciona o botão para abrir/fechar a seção de estoque de cédulas/moedas
     const toggleBtn = document.getElementById('toggle-estoque');
+    // Seleciona o container que contém os inputs de estoque
     const estoqueContent = document.getElementById('estoque-content');
 
 
@@ -19,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // SEÇÃO 2: MAPA DE VALORES E ESTOQUE
     // ============================
 
-    // Mapeia os valores (em centavos) das cédulas e moedas para o ID do input correspondente
+    // Mapeia os valores (em centavos) para os IDs dos inputs correspondentes
     const mapaValoresParaIDs = {
         20000: 'qnt_200',   // R$ 200,00
         10000: 'qnt_100',   // R$ 100,00
@@ -35,98 +40,82 @@ document.addEventListener('DOMContentLoaded', () => {
         5:     'qnt_0_05'   // R$ 0,05
     };
     
-    // Cria um array com os valores das cédulas e moedas em centavos, ordenados do maior para o menor
+    // Cria um array de valores em centavos, do maior para o menor
     const cedulasEMoedasEmCentavos = Object.keys(mapaValoresParaIDs)
-        .map(Number)
-        .sort((a, b) => b - a);
+        .map(Number) // converte de string para número
+        .sort((a, b) => b - a); // ordena do maior para o menor
     
     // ============================
     // SEÇÃO 3: FUNÇÃO DE CÁLCULO DE TROCO (COM ESTOQUE)
     // ============================
 
-    // Função que calcula o troco respeitando o estoque de notas/moedas
+    // Função que calcula o troco considerando o estoque de cédulas/moedas
     function calcularTrocoPorCedulas(troco) {
-        let resultadoTexto = '<ul>';
-        let trocoRestante = Math.round(troco * 100); // Troco em centavos
+        let resultadoTexto = '<ul>'; // Inicia a lista de resultados
+        let trocoRestante = Math.round(troco * 100); // Converte troco para centavos
 
         // --- 1. LÊ O ESTOQUE ATUAL DEFINIDO PELO USUÁRIO ---
-        const estoqueAtual = {};
+        const estoqueAtual = {}; // Objeto que guarda a quantidade de cada cédula disponível
         for (const [valorEmCentavos, id] of Object.entries(mapaValoresParaIDs)) {
-            const inputElement = document.getElementById(id);
-            // Lê a quantidade de cada cédula disponível e garante que seja um número inteiro, ou zero
-            estoqueAtual[Number(valorEmCentavos)] = parseInt(inputElement.value) || 0;
+            const inputElement = document.getElementById(id); // Seleciona o input correspondente
+            estoqueAtual[Number(valorEmCentavos)] = parseInt(inputElement.value) || 0; // Converte o valor do input para inteiro ou 0
         }
 
-        let trocoCalculado = {};
-        let trocoConseguiuDar = true;
+        let trocoCalculado = {}; // Objeto que armazenará a quantidade de cada cédula usada
+        let trocoConseguiuDar = true; // Flag que indica se foi possível dar todo o troco
 
         // --- 2. CALCULA O TROCO USANDO O ESTOQUE DISPONÍVEL ---
         for (const valorEmCentavos of cedulasEMoedasEmCentavos) {
-            // Quantidade máxima disponível dessa cédula
-            let limiteDeUso = estoqueAtual[valorEmCentavos] || 0;
-
-            // Quantidade ideal de notas/moedas necessária (sem considerar o estoque)
-            let quantidadeIdeal = Math.floor(trocoRestante / valorEmCentavos);
-
-            // Usa apenas o que está disponível no estoque
-            let quantidadeUsada = Math.min(quantidadeIdeal, limiteDeUso);
+            let limiteDeUso = estoqueAtual[valorEmCentavos] || 0; // Quantidade máxima disponível no estoque
+            let quantidadeIdeal = Math.floor(trocoRestante / valorEmCentavos); // Quantidade necessária sem restrição de estoque
+            let quantidadeUsada = Math.min(quantidadeIdeal, limiteDeUso); // Usa apenas o que está disponível
             
-            // Se for usar alguma quantidade dessa cédula/moeda
             if (quantidadeUsada > 0) {
-                // Armazena o valor e a quantidade usada
-                trocoCalculado[valorEmCentavos] = quantidadeUsada;
-                
-                // Subtrai o valor usado do troco restante
-                trocoRestante -= quantidadeUsada * valorEmCentavos;
+                trocoCalculado[valorEmCentavos] = quantidadeUsada; // Armazena a quantidade usada
+                trocoRestante -= quantidadeUsada * valorEmCentavos; // Atualiza o troco restante
             }
         }
         
         // --- 3. MONTA O RESULTADO VISUAL ---
         for (const valor of cedulasEMoedasEmCentavos) {
             if (trocoCalculado[valor]) {
-                const quantidade = trocoCalculado[valor];
+                const quantidade = trocoCalculado[valor]; // Quantidade usada dessa cédula
                 const valorReal = valor / 100; // Converte centavos para reais
-                const tipo = valorReal >= 2 ? 'nota' : 'moeda'; // Define o tipo (nota ou moeda)
+                const tipo = valorReal >= 2 ? 'nota' : 'moeda'; // Determina se é nota ou moeda
                 const plural = quantidade > 1 ? 's' : ''; // Define plural
-                const valorFormatado = valorReal.toFixed(2).replace('.', ',');
-
-                // Adiciona a linha na lista de troco
-                resultadoTexto += `<li>${quantidade} ${tipo}${plural} de R$ ${valorFormatado}</li>`;
+                const valorFormatado = valorReal.toFixed(2).replace('.', ','); // Formata valor
+                
+                resultadoTexto += `<li>${quantidade} ${tipo}${plural} de R$ ${valorFormatado}</li>`; // Adiciona à lista
             }
         }
 
-        // Se ainda sobrou troco e o caixa não tem notas suficientes
+        // Se ainda sobrou troco e não há cédulas suficientes
         if (trocoRestante > 0) {
-            trocoConseguiuDar = false;
-            // Mostra mensagem de erro destacada
+            trocoConseguiuDar = false; // Flag indica que não foi possível completar o troco
             resultadoTexto += `<li style="color: red; font-weight: 700;">[ATENÇÃO] Troco indisponível! Faltam R$ ${(trocoRestante / 100).toFixed(2).replace('.', ',')}</li>`;
         }
         
         resultadoTexto += '</ul>'; // Fecha a lista
-        // Retorna o HTML e a flag de sucesso
-        return {html: resultadoTexto, sucesso: trocoConseguiuDar};
+        return {html: resultadoTexto, sucesso: trocoConseguiuDar}; // Retorna HTML e flag de sucesso
     }
     
     // ============================
     // SEÇÃO 4: LÓGICA DE TOGGLE (ESCONDER/MOSTRAR ESTOQUE)
     // ============================
     
-    // Inicia o estoque escondido por padrão (opcional, mas bom para usabilidade)
-    // Se você quer que ele comece ABERTO, remova estas linhas:
-    estoqueContent.classList.add('hidden');
-    toggleBtn.setAttribute('aria-expanded', 'false');
+    estoqueContent.classList.add('hidden'); // Começa escondido
+    toggleBtn.setAttribute('aria-expanded', 'false'); // Define atributo ARIA para acessibilidade
 
-
-    // Evento de clique para esconder/mostrar a seção de estoque
+    // Clique no botão de toggle
     toggleBtn.addEventListener('click', () => {
-        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true'; // Verifica se já está expandido
         
         if (isExpanded) {
-            estoqueContent.classList.add('hidden');
-            toggleBtn.setAttribute('aria-expanded', 'false');
+            estoqueContent.classList.add('hidden'); // Esconde conteúdo
+            toggleBtn.setAttribute('aria-expanded', 'false'); // Atualiza ARIA
         } else {
-            estoqueContent.classList.remove('hidden');
-            toggleBtn.setAttribute('aria-expanded', 'true');
+            estoqueContent.classList.remove('hidden'); // Mostra conteúdo
+            toggleBtn.setAttribute('aria-expanded', 'true'); // Atualiza ARIA
         }
     });
 
@@ -134,81 +123,71 @@ document.addEventListener('DOMContentLoaded', () => {
     // SEÇÃO 5: EVENTO PRINCIPAL DE CÁLCULO
     // ============================
 
-    // Quando o usuário clicar no botão "Calcular"
     calcularBtn.addEventListener('click', () => {
+        resultadoDiv.classList.add('hidden-result'); // Esconde resultado anterior para animação
         
-        // --- ANIMAÇÃO: Esconde o resultado anterior (reinicia a animação) ---
-        resultadoDiv.classList.add('hidden-result');
-        
-        // Função auxiliar para processar o valor digitado (aceita vírgula ou ponto)
+        // Função auxiliar para tratar valores com vírgula ou ponto
         function processarValor(valor) {
             if (valor.indexOf(',') !== -1) {
-                return parseFloat(valor.replace(',', '.'));
+                return parseFloat(valor.replace(',', '.')); // Substitui vírgula por ponto
             }
-            return parseFloat(valor);
+            return parseFloat(valor); // Caso já seja ponto
         }
 
-        // Converte os valores dos inputs para número decimal
-        const totalCompra = processarValor(totalCompraInput.value);
-        const valorPago = processarValor(valorPagoInput.value);
+        const totalCompra = processarValor(totalCompraInput.value); // Valor total da compra
+        const valorPago = processarValor(valorPagoInput.value); // Valor pago pelo cliente
         
-        // Variáveis de controle de resultado e estilo
-        let htmlContent = '';
-        let borderColor = '';
-        let bgColor = '';
-        let shouldAnimate = false;
+        let htmlContent = ''; // Armazena HTML do resultado
+        let borderColor = ''; // Cor da borda do resultado
+        let bgColor = ''; // Cor do fundo do resultado
+        let shouldAnimate = false; // Controla animação de exibição
 
-        // 1. Validação de Entrada
+        // Validação de entrada
         if (isNaN(totalCompra) || isNaN(valorPago) || totalCompra <= 0) {
             htmlContent = '<p style="color: red;">Por favor, insira valores válidos para a compra.</p>';
-            borderColor = '#e57373';
-            bgColor = '#ffebee';
+            borderColor = '#e57373'; // Vermelho claro
+            bgColor = '#ffebee'; // Fundo vermelho claro
+            shouldAnimate = true;
         } 
-        // 2. Verifica se o valor pago é insuficiente
-        else if (valorPago < totalCompra) {
+        else if (valorPago < totalCompra) { // Valor insuficiente
             const faltando = (totalCompra - valorPago).toFixed(2).replace('.', ',');
             htmlContent = `<p style="color: red;">Valor pago insuficiente. Faltam: R$ ${faltando}</p>`;
             borderColor = '#e57373';
             bgColor = '#ffebee';
+            shouldAnimate = true;
         } 
-        // 3. Cálculo válido
-        else {
-            const troco = valorPago - totalCompra;
+        else { // Cálculo válido
+            const troco = valorPago - totalCompra; // Calcula o troco
             
-            // Chama a função para calcular o troco detalhado (respeitando o estoque)
-            const resultadoTroco = calcularTrocoPorCedulas(troco);
+            const resultadoTroco = calcularTrocoPorCedulas(troco); // Chama função de cálculo
             
-            // Define o conteúdo e cores baseado no sucesso do troco
-            if (resultadoTroco.sucesso) {
+            if (resultadoTroco.sucesso) { // Troco completo
                 htmlContent = `<p style="color: green;">Troco total: R$ ${troco.toFixed(2).replace('.', ',')}</p>`;
                 htmlContent += '<h3>Detalhes do Troco:</h3>';
                 htmlContent += resultadoTroco.html;
-                
-                borderColor = '#81c784'; 
-                bgColor = '#e8f5e9'; 
-            } else {
+                borderColor = '#81c784';
+                bgColor = '#e8f5e9';
+            } else { // Troco insuficiente
                 htmlContent = `<p style="color: red;">Troco total: R$ ${troco.toFixed(2).replace('.', ',')}</p>`;
                 htmlContent += '<h3>Detalhes do Troco:</h3>';
                 htmlContent += resultadoTroco.html;
-                
                 borderColor = '#e57373';
                 bgColor = '#ffebee';
             }
             
-            shouldAnimate = true; // Habilita a animação de exibição
+            shouldAnimate = true; // Habilita animação
         }
 
-        // Aplica o conteúdo HTML e os estilos de cor
+        // Aplica conteúdo e estilos no container de resultado
         resultadoDiv.innerHTML = htmlContent;
         resultadoDiv.style.borderColor = borderColor;
         resultadoDiv.style.backgroundColor = bgColor;
 
-        // Inicia a animação (remove a classe que esconde/reposiciona)
+        // Inicia animação CSS removendo a classe que esconde
         if (shouldAnimate) {
-            // Pequeno delay para garantir o reinício da transição CSS
             setTimeout(() => {
-                resultadoDiv.classList.remove('hidden-result');
-            }, 10); 
+                resultadoDiv.classList.remove('hidden-result'); // Remove classe de ocultamento
+            }, 10); // Pequeno delay para reiniciar animação
         }
     });
 });
